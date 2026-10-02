@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Antuuuuuuuuuuuuuuu 💜✨</title>
+  <meta name="description" content="A magical birthday surprise made with love for my best friend.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts: Pacifico, Dancing Script, Caveat, Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Audio Element (Falls back to Web Audio API Music Box synthesizer if mp3 is absent) -->
+  <audio id="bg-music" src="assets/birthday-song.mp3" loop preload="auto"></audio>
+
+  <!-- Twinkling Ambient Stars & Sparkles Background Canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Floating Audio & Control Navigation -->
+  <nav class="floating-controls" id="floating-controls" aria-label="Audio Controls">
+    <button id="music-toggle-btn" class="glass-icon-btn" title="Toggle Birthday Music" aria-label="Toggle Birthday Music">
+      <div class="music-wave-bars" id="music-wave-bars">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+        <span class="bar bar-4"></span>
+      </div>
+      <i class="fas fa-music music-note-icon"></i>
+    </button>
+  </nav>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 1: CINEMATIC INTRO & HEART TREE                      -->
+  <!-- ========================================================= -->
+  <section id="scene-1" class="scene active black-intro" aria-label="Cinematic Intro">
+    <!-- Tap to Begin Gate Screen (Required for Audio Autoplay Policy) -->
+    <div id="tap-to-begin-overlay" class="tap-overlay">
+      <div class="tap-content">
+        <div class="pulsing-heart-icon">💜</div>
+        <h2 class="tap-title">A surprise awaits you...</h2>
+        <p class="tap-sub">Turn your sound up for the full experience</p>
+        <button id="start-experience-btn" class="glow-pill-btn">
+          Tap to begin 💜
+        </button>
+      </div>
+    </div>
+
+    <!-- Tree Growth & Blossoming Hearts Canvas -->
+    <div id="intro-canvas-container" class="intro-canvas-container">
+      <canvas id="tree-canvas"></canvas>
+    </div>
+
+    <!-- Scene 1 Title Banner -->
+    <div id="intro-title-box" class="intro-title-box">
+      <h1 class="intro-hbd-text">Happy Birthday Antuuuuuuuuuuuuuuu 💜</h1>
+      <p class="intro-sparkle-text">A little magic grown just for you ✨</p>
+    </div>
+
+    <!-- Small Skip Intro Button -->
+    <button id="skip-intro-btn" class="skip-intro-btn" title="Skip Intro">
+      Skip Intro →
+    </button>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 2: PASSWORD GATE                                    -->
+  <!-- ========================================================= -->
+  <section id="scene-2" class="scene" aria-label="Secret Passcode Gate">
+    <div class="scene-container">
+      <div class="password-gate-grid">
+        
+        <!-- Left Column: Collage of 4 Photos (Polaroid / Rounded Scrapbook style) -->
+        <div class="photo-collage-column">
+          <div class="collage-grid">
+            <div class="polaroid-card tilt-left zoomable-photo" data-img="assets/photo1.png">
+              <div class="polaroid-inner">
+                <img src="assets/photo1.png" alt="Memory Photo 1" loading="lazy">
+                <span class="polaroid-caption">Best moments ✨</span>
+              </div>
+            </div>
+            <div class="polaroid-card tilt-right zoomable-photo" data-img="assets/photo2.png">
+              <div class="polaroid-inner">
+                <img src="assets/photo2.png" alt="Memory Photo 2" loading="lazy">
+                <span class="polaroid-caption">Pure smiles 💕</span>
+              </div>
+            </div>
+            <div class="polaroid-card tilt-right zoomable-photo" data-img="assets/photo3.png">
+              <div class="polaroid-inner">
+                <img src="assets/photo3.png" alt="Memory Photo 3" loading="lazy">
+                <span class="polaroid-caption">Always shining 🌟</span>
+              </div>
+            </div>
+            <div class="polaroid-card tilt-left zoomable-photo" data-img="assets/photo4.png">
+              <div class="polaroid-inner">
+                <img src="assets/photo4.png" alt="Memory Photo 4" loading="lazy">
+                <span class="polaroid-caption">Cutie 💜</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Password Card -->
+        <div class="password-card-column">
+          <div class="glass-card password-card" id="password-card">
+            <div class="lock-icon-container" id="lock-icon-box">
+              <i class="fas fa-lock" id="lock-icon"></i>
+            </div>
+            
+            <h2 class="card-heading">Enter the secret code to continue 🔐</h2>
+            <p class="card-subheading">Unlock the birthday vault with your 4-digit code</p>
+
+            <!-- 4-Digit Indicator Slots -->
+            <div class="pin-slots" id="pin-slots">
+              <div class="pin-slot" data-index="0"></div>
+              <div class="pin-slot" data-index="1"></div>
+              <div class="pin-slot" data-index="2"></div>
+              <div class="pin-slot" data-index="3"></div>
+            </div>
+
+            <!-- Hidden / Keyboard Input Field -->
+            <input type="password" id="pin-input" class="hidden-pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" autocomplete="off" autofocus>
+
+            <!-- Interactive On-Screen Keypad for Phone & Desktop -->
+            <div class="keypad-layout">
+              <button class="key-btn" data-val="1">1</button>
+              <button class="key-btn" data-val="2">2</button>
+              <button class="key-btn" data-val="3">3</button>
+              <button class="key-btn" data-val="4">4</button>
+              <button class="key-btn" data-val="5">5</button>
+              <button class="key-btn" data-val="6">6</button>
+              <button class="key-btn" data-val="7">7</button>
+              <button class="key-btn" data-val="8">8</button>
+              <button class="key-btn" data-val="9">9</button>
+              <button class="key-btn key-action" id="key-clear" title="Clear">⌫</button>
+              <button class="key-btn" data-val="0">0</button>
+              <button class="key-btn key-action-submit" id="key-submit" title="Unlock">✓</button>
+            </div>
+
+            <!-- Unlock Button -->
+            <button id="unlock-submit-btn" class="glow-pill-btn unlock-btn">
+              Unlock 🔓
+            </button>
+
+            <!-- Status Error Message -->
+            <div id="pin-error-msg" class="pin-feedback-msg"></div>
+
+            <!-- Hint Text -->
+            <p class="pin-hint-text">
+              <i class="fas fa-lightbulb"></i> Hint: Your special day 🎂 (DD/MM)
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 3: THE RASMALAI CAKE                                -->
+  <!-- ========================================================= -->
+  <section id="scene-3" class="scene" aria-label="Interactive Birthday Cake">
+    <div class="scene-container cake-scene-container">
+      
+      <div class="cake-header-box">
+        <h2 class="script-subtitle">A Sweet Birthday Wish</h2>
+        <h1 class="cake-main-title">Rasmalai cake, just for you 🍰</h1>
+        <p class="cake-desc">Soft saffron cream, pistachio drizzle & a wish waiting to be made!</p>
+      </div>
+
+      <!-- Rasmalai Cake Showcase Card -->
+      <div class="cake-showcase-box">
+        <div class="cake-plate-shadow"></div>
+        <div class="cake-img-wrapper">
+          <img src="assets/rasmalai_cake.jpg" alt="Aesthetic Rasmalai Birthday Cake" class="rasmalai-cake-image" id="cake-photo">
+          
+          <!-- Animated Interactive Flame Layer -->
+          <div class="candle-flame-wrapper" id="candle-flame-wrapper">
+            <div class="flame-glow-halo"></div>
+            <div class="candle-flame-core" id="candle-flame"></div>
+            <!-- Smoke Wisp (Appears on Blow) -->
+            <div class="smoke-wisp" id="smoke-wisp">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blow Candle Button -->
+      <div class="cake-controls">
+        <button id="blow-candle-btn" class="glow-pill-btn blow-btn">
+          Blow the candle 🕯️💨
+        </button>
+        <p class="blow-subhint" id="blow-hint">Click or tap to make your birthday wish come true ✨</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 4: BIRTHDAY WISH                                    -->
+  <!-- ========================================================= -->
+  <section id="scene-4" class="scene" aria-label="Birthday Wish Celebration">
+    <!-- Floating Balloons Background Animation Container -->
+    <div class="balloons-floating-layer" id="balloons-floating-layer"></div>
+
+    <div class="scene-container wish-scene-container">
+      <div class="wish-glass-card">
+        <div class="sparkling-star-icon">✨ 💜 ✨</div>
+        <h1 class="grand-birthday-wish-title">
+          Wishing You Your Happiest Birthday Antuuuuuuuuuuuuuuu! 🎉💜
+        </h1>
+        <p class="grand-birthday-wish-sub">
+          May this year bring you endless joy, radiant smiles, boundless adventures, and as much love as you bring to everyone around you.
+        </p>
+
+        <div class="wish-action-box">
+          <button id="continue-to-letter-btn" class="glow-pill-btn continue-btn">
+            Continue to Letter 💌
+          </button>
+          <div class="auto-advance-timer-sub">Auto-advancing in <span id="countdown-wish-num">5</span>s...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 5: MEMORIES AND LETTER                              -->
+  <!-- ========================================================= -->
+  <section id="scene-5" class="scene" aria-label="Memories and Personal Letter">
+    <div class="scene-container letter-scene-container">
+      
+      <div class="memories-letter-grid">
+        
+        <!-- Left Column: 4 Memory Photos (Scene 5 Gallery) -->
+        <div class="memories-gallery-column">
+          <h2 class="gallery-section-title">Cherished Memories 📸</h2>
+          <div class="memories-grid">
+            <div class="polaroid-card polaroid-memory zoomable-photo" data-img="assets/photo5.png">
+              <div class="washi-tape tape-purple"></div>
+              <div class="polaroid-inner">
+                <img src="assets/photo5.png" alt="Memory 5" loading="lazy">
+                <span class="polaroid-caption">Prettiest girl ✨</span>
+              </div>
+            </div>
+            <div class="polaroid-card polaroid-memory zoomable-photo" data-img="assets/photo6.png">
+              <div class="washi-tape tape-blush"></div>
+              <div class="polaroid-inner">
+                <img src="assets/photo6.png" alt="Memory 6" loading="lazy">
+                <span class="polaroid-caption">Lavender days 💜</span>
+              </div>
+            </div>
+            <div class="polaroid-card polaroid-memory zoomable-photo" data-img="assets/photo7.png">
+              <div class="washi-tape tape-gold"></div>
+              <div class="polaroid-inner">
+                <img src="assets/photo7.png" alt="Memory 7" loading="lazy">
+                <span class="polaroid-caption">Unbiological sister 💕</span>
+              </div>
+            </div>
+            <div class="polaroid-card polaroid-memory zoomable-photo" data-img="assets/cute_party.png">
+              <div class="washi-tape tape-purple"></div>
+              <div class="polaroid-inner">
+                <img src="assets/cute_party.png" alt="Celebration" loading="lazy">
+                <span class="polaroid-caption">Celebration time 🎉</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Letter Card with Parchment Style & Typewriter Effect -->
+        <div class="letter-card-column">
+          <div class="letter-envelope-wrapper">
+            <div class="parchment-letter-card" id="parchment-letter-card">
+              
+              <!-- Wax Seal & Stamp Accent -->
+              <div class="letter-top-accents">
+                <div class="stamp-box">📮 <span>SPECIAL DELIVERY</span></div>
+                <div class="wax-seal-badge">💜</div>
+              </div>
+
+              <!-- Greeting -->
+              <div class="letter-greeting" id="letter-greeting">
+                Dear Antuuuuuuuuuuuuuuu, 💜
+              </div>
+
+              <!-- Scrollable Letter Body -->
+              <div class="letter-body-scrollable" id="letter-body">
+                <p class="letter-paragraph">
+                  Happy Birthday to my favorite person in the whole universe! 🎂✨
+                </p>
+                <p class="letter-paragraph">
+                  Honestly, when we first met, I never thought that a college friendship would become something this special. But somehow, three semesters later, here we are—with so many memories, countless conversations, stupid jokes, random plans, laughs, and moments that I know I’ll always remember.
+
+You are genuinely one of the best friends I have ever had in my life. ❤️
+
+One thing I appreciate about you the most is that you are always there for me. Whenever I need someone to talk to, whenever I need advice, or even when I just need someone to be around, you somehow always make time for me. You listen to me, understand me, and then give me the best suggestion you can. Sometimes I may not follow your advice 😭😂, but I always know that you are saying it because you genuinely care about me.
+
+And honestly, having someone who cares that much is a blessing.
+                </p>
+                <p class="letter-paragraph">
+                  We have spent almost three semesters together, and in these months, we have created so many memories that it is impossible to pick just a few. From our random conversations to our college moments, from laughing over absolutely stupid things to discussing serious things, every little moment has become special because it was with you.
+
+And Antuuuuuuuuuuuuuuu, you are seriously the BEST MANAGER EVER. ❤️
+The way you manage everything—your work, people, plans, situations, and somehow even us—is honestly impressive. You can handle so many things at once and still somehow manage to be there for the people you care about. I genuinely admire that about you.
+
+I don't know what the future will look like or where life will take both of us, but I really hope that no matter how much things change, our friendship never changes. I hope we keep making stupid memories, annoying each other, supporting each other, giving each other advice, and laughing at things that probably wouldn't even make sense to anyone else. 😂
+                </p>
+                <p class="letter-paragraph">
+                 Thank you for being there.
+Thank you for listening.
+Thank you for supporting me.
+Thank you for giving me your time.
+Thank you for always trying to guide me in the best way you can.
+And most importantly, thank you for being YOU. ❤️
+
+You are not just my college friend anymore. You have become someone who genuinely matters to me, someone I can count on, and someone I will always be grateful that I met.
+
+On your birthday, I just want to say:
+
+I hope you get everything you deserve in life. I hope you always stay happy, keep smiling that beautiful smile, achieve everything you dream about, and never lose the amazing person you are. 🫶🏻✨
+
+And yes, no matter how many semesters pass, no matter where life takes us—
+
+you will always be my Antuuuuuuuuuuuuuuu. ❤️
+
+Happy Birthday once again, Antuuuuuuuuuuuuuuu! 🎂🥹💗
+                </p>
+                <div class="letter-signature">
+                  Forever and always,<br>
+                  <span>Your Latkhoriii 💜</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Experience Footer: Made with Love & Invitation CTA -->
+      <footer class="experience-footer">
+        <p class="footer-credit">Made with 💜 for you</p>
+        <button id="open-invitation-btn" class="glow-pill-btn invite-cta-btn">
+          Open Your Final Surprise 🎁💌
+        </button>
+      </footer>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SCENE 6: SPECIAL BIRTHDAY INVITATION                      -->
+  <!-- ========================================================= -->
+  <section id="scene-6" class="scene" aria-label="Official Birthday Invitation">
+    <div class="scene-container invitation-scene-container">
+      
+      <div class="invitation-header-box">
+        <span class="invite-pretitle">One more thing... ✨</span>
+        <h1 class="invitation-main-title">You're Officially Invited! 💌</h1>
+        <p class="invitation-sub-title">A special birthday rendezvous planned just for you</p>
+      </div>
+
+      <!-- Luxury VIP Invitation Card -->
+      <div class="vip-invitation-card" id="vip-invitation-card">
+        <div class="ticket-glow-effect"></div>
+        <div class="ticket-inner">
+          
+          <!-- Top Badge -->
+          <div class="ticket-top-badge">
+            <span class="golden-ribbon"><i class="fas fa-crown"></i> VIP BIRTHDAY PASS <i class="fas fa-crown"></i></span>
+            <div class="ticket-seal">💜</div>
+          </div>
+
+          <h2 class="ticket-event-name">Sunset & Starlight Celebration</h2>
+          <p class="ticket-tagline">An evening of music, treats, laughter, and surprises 🌸</p>
+
+          <!-- Invitation Details Grid -->
+          <div class="invite-details-grid">
+            
+            <div class="invite-detail-item">
+              <div class="detail-icon-circle"><i class="fas fa-tree"></i></div>
+              <div class="detail-info">
+                <span class="detail-label">WHERE</span>
+                <span class="detail-value highlight-location">At The Park 🌳</span>
+              </div>
+            </div>
+
+            <div class="invite-detail-item">
+              <div class="detail-icon-circle"><i class="fas fa-calendar-star"></i><i class="fas fa-calendar-day"></i></div>
+              <div class="detail-info">
+                <span class="detail-label">DATE</span>
+                <span class="detail-value">15th Oct 2026 📅</span>
+              </div>
+            </div>
+
+            <div class="invite-detail-item">
+              <div class="detail-icon-circle"><i class="fas fa-clock"></i></div>
+              <div class="detail-info">
+                <span class="detail-label">TIME</span>
+                <span class="detail-value highlight-time">7:30 PM ⏰</span>
+              </div>
+            </div>
+
+            <div class="invite-detail-item">
+              <div class="detail-icon-circle"><i class="fas fa-sparkles"></i><i class="fas fa-heart"></i></div>
+              <div class="detail-info">
+                <span class="detail-label">DRESS CODE</span>
+                <span class="detail-value">Given to u 👗</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Sweet Note -->
+          <div class="invite-personal-note">
+            <p>
+              "Wear your favorite outfit, bring your sweetest smile, and don't be late! Your bestie is waiting for you with lots of surprises! 💜✨"
+            </p>
+          </div>
+
+          <!-- Live Countdown to 15th Oct 2026 7:30 PM -->
+          <div class="countdown-wrapper">
+            <span class="countdown-heading"><i class="fas fa-hourglass-half"></i> COUNTDOWN TO OUR SPECIAL DAY</span>
+            <div class="countdown-units">
+              <div class="countdown-box">
+                <span class="countdown-val" id="count-days">--</span>
+                <span class="countdown-lbl">DAYS</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-val" id="count-hours">--</span>
+                <span class="countdown-lbl">HOURS</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-val" id="count-minutes">--</span>
+                <span class="countdown-lbl">MINS</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-val" id="count-seconds">--</span>
+                <span class="countdown-lbl">SECS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Action Buttons -->
+          <div class="invite-action-buttons">
+            <button id="rsvp-btn" class="glow-pill-btn rsvp-btn">
+              <i class="fas fa-check-circle"></i> I'll Be There! 💜
+            </button>
+            <a id="calendar-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Bestie%27s+Birthday+Celebration+at+the+Park+%F0%9F%92%9C&dates=20261015T140000Z%2F20261015T163000Z&details=Meet+at+the+Park+at+7%3A30+PM+for+a+special+birthday+celebration%21+%F0%9F%8E%89%F0%9F%92%9C&location=The+Park" target="_blank" rel="noopener noreferrer" class="glow-pill-btn calendar-btn">
+              <i class="fab fa-google"></i> Add to Calendar 📅
+            </a>
+          </div>
+
+          <!-- RSVP Confirmation Banner -->
+          <div id="rsvp-feedback-banner" class="rsvp-feedback-banner">
+            🎉 Yay! RSVP Confirmed! Can't wait to see you at the park at 7:30 PM! 💜✨
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Experience Footer: Replay Option -->
+      <footer class="experience-footer">
+        <button id="replay-btn-final" class="glow-pill-btn replay-btn" title="Replay from Scene 1">
+          <i class="fas fa-rotate-right"></i> Replay Experience from Start 🔁
+        </button>
+      </footer>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- LIGHTBOX MODAL FOR HIGH-RES PHOTO PREVIEWS                 -->
+  <!-- ========================================================= -->
+  <div id="lightbox-modal" class="lightbox-modal" aria-hidden="true" role="dialog">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Close photo preview">✕</button>
+      <img src="" alt="Expanded Memory" id="lightbox-image" class="lightbox-image">
+    </div>
+  </div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
